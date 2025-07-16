@@ -265,7 +265,18 @@ export function handleRunCommand(
     return;
   }
 
-  if (!checkCommandConsent(commandData.command, commandData.args, mainWindow)) {
+  // Only allow "minikube", and "az" commands
+  const validCommands = ['minikube', 'az', 'kubectl'];
+
+  if (!validCommands.includes(eventData.command)) {
+    console.error(
+      `Invalid command: ${eventData.command}, only valid commands are: ${JSON.stringify(
+        validCommands
+      )}`
+    );
+    return;
+  }
+  if (!checkCommandConsent(eventData.command, mainWindow)) {
     return;
   }
 
